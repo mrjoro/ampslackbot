@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/mrjoro/ampslackbot#readme",
   "dependencies": {
+    "@slack/client": "^4.3.1",
+    "@slack/events-api": "^1.0.1",
     "tinyspeck": "^1.4.2"
   },
   "devDependencies": {

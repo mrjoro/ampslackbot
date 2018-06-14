@@ -1,8 +1,36 @@
-const ts = require('tinyspeck');
-const PORT = process.env.PORT || 3000;
-const TOKEN = process.env.TOKEN;
+// Initialize using verification token from environment variables
+const createSlackEventAdapter = require('@slack/events-api').createSlackEventAdapter;
+const slackEvents = createSlackEventAdapter(process.env.SLACK_VERIFICATION_TOKEN);
+const port = process.env.PORT || 3000;
 
-let slack = ts.instance(/*{ token: TOKEN }*/);
+// Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
+slackEvents.on('message', (event) => {
+  console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+});
+
+slackEvents.on('reaction_added', event => {
+  let {type, user, item} = event;
+
+  console.log(`a reaction was added by ${user}: ${JSON.stringify(item)}`);
+});
+
+slackEvents.on('member_joined_channel', event => {
+  let {type, user, channel} = event;
+
+  console.log(`member ${user} joined ${channel})`);
+});
+
+// Handle errors (see `errorCodes` export)
+slackEvents.on('error', console.error);
+
+// Start a basic HTTP server
+slackEvents.start(port).then(() => {
+  console.log(`server listening for events on port ${port}`);
+});
+
+/*
+let slack = ts.instance(
+  { token: TOKEN });
 
 slack.on('reaction_added', payload => {
   let {type, user, item} = payload.event;
@@ -21,6 +49,7 @@ slack.on('member_joined_channel', payload => {
 
   console.log(`member ${user} joined ${channel})`);
 });
+*/
 
 
 // incoming http requests
