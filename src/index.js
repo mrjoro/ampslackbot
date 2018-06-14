@@ -10,7 +10,7 @@ slack.on('reaction_added', payload => {
   console.log(`a reaction was added by ${user}: ${JSON.stringify(item)}`);
 });
 
-slack.on('team_joined', payload => {
+slack.on('team_join', payload => {
   let {type, user} = payload.event;
 
   console.log(`the following user joined the team: ${JSON.stringify(user)})`);
