@@ -5,6 +5,9 @@ const dotenv = require('dotenv')
 const ENV = process.env.NODE_ENV || 'development'
 if (ENV === 'development') dotenv.load()
 
+const {WebClient} = require('@slack/client');
+const slackWebClient = new WebClient(process.env.SLACK_BOT_OAUTH_TOKEN);
+
 const createSlackEventAdapter = require('@slack/events-api').createSlackEventAdapter;
 const slackEvents = createSlackEventAdapter(process.env.SLACK_VERIFICATION_TOKEN);
 const port = process.env.PORT || 3000;
@@ -13,6 +16,14 @@ slackEvents.on('reaction_added', event => {
   let {type, user, item} = event;
 
   console.log(`a reaction was added by ${user}: ${JSON.stringify(item)}`);
+
+  // See: https://api.slack.com/methods/chat.postMessage
+  slackWebClient.chat.postMessage({ channel: '#general', text: 'Nice reaction!' })
+    .then((res) => {
+      // `res` contains information about the posted message
+      console.log('Message sent: ', res.ts);
+    })
+    .catch(console.error);
 });
 
 slackEvents.on('team_join', event => {
