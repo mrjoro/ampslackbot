@@ -1,4 +1,8 @@
 // Initialize using verification token from environment variables
+const dotenv = require('dotenv')
+const ENV = process.env.NODE_ENV || 'development'
+if (ENV === 'development') dotenv.load()
+
 const createSlackEventAdapter = require('@slack/events-api').createSlackEventAdapter;
 const slackEvents = createSlackEventAdapter(process.env.SLACK_VERIFICATION_TOKEN);
 const port = process.env.PORT || 3000;
@@ -49,8 +53,8 @@ slack.on('member_joined_channel', payload => {
 
   console.log(`member ${user} joined ${channel})`);
 });
-*/
 
 
 // incoming http requests
 slack.listen(PORT);
+*/
