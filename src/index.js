@@ -18,7 +18,7 @@ slackEvents.on('reaction_added', event => {
   console.log(`a reaction was added by ${user}: ${JSON.stringify(item)}`);
 
   // See: https://api.slack.com/methods/chat.postMessage
-  slackWebClient.chat.postMessage({ channel: '#general', text: 'Nice reaction!' })
+  slackWebClient.chat.postMessage({ channel: user, text: 'Nice reaction!' })
     .then((res) => {
       // `res` contains information about the posted message
       console.log('Message sent: ', res.ts);
