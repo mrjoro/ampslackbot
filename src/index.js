@@ -30,6 +30,14 @@ slackEvents.on('team_join', event => {
   let {type, user} = event;
 
   console.log(`the following user joined the team: ${JSON.stringify(user)})`);
+
+  // See: https://api.slack.com/methods/chat.postMessage
+  slackWebClient.chat.postMessage({ channel: user, text: 'Welcome to the AMP Slack!  Join the #using-amp channel to ask questions about using AMP.' })
+    .then((res) => {
+      // `res` contains information about the posted message
+      console.log('Message sent: ', res.ts);
+    })
+    .catch(console.error);
 });
 
 slackEvents.on('member_joined_channel', event => {
