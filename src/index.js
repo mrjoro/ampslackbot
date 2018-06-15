@@ -25,9 +25,8 @@ slackEvents.on('team_join', event => {
 
   console.log(`the following user joined the team: ${JSON.stringify(user)}`);
 
-  slackWebClient.chat.postEphemeral({
-      channel: '#announcements',
-      user: user.id,
+  slackWebClient.chat.postMessage({
+      channel: user.id,
       text: msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name)
     }).then((result) => {
       console.log('Message sent: ', JSON.stringify(result));
