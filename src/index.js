@@ -24,7 +24,7 @@ slackEvents.on('team_join', event => {
   } = event;
 
   console.log(`the following user joined the team: ${JSON.stringify(user)}`);
-
+  console.log(`will send message ${msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name)}`)
   slackWebClient.chat.postMessage({
       channel: user.id,
       text: msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name)
