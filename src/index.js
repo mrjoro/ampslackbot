@@ -27,7 +27,7 @@ slackEvents.on('team_join', event => {
     text: msgs.WELCOME_MESSAGES.GLOBAL(user.real_name)
   }).then((result) => {
       // `result` contains information about the posted message
-      console.log('Message sent: ', res.ts);
+      console.log('Message sent: ', result.ts);
     })
     .catch(console.error);
 });
@@ -41,7 +41,7 @@ slackEvents.on('member_joined_channel', event => {
     text: msgs.WELCOME_MESSAGES.GLOBAL()
   }).then((result) => {
       // `result` contains information about the posted message
-      console.log('Message sent: ', res.ts);
+      console.log('Message sent: ', result.ts);
     })
     .catch(console.error);
 
