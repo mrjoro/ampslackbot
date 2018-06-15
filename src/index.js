@@ -7,7 +7,9 @@ const dotenv = require('dotenv')
 const ENV = process.env.NODE_ENV || 'development'
 if (ENV === 'development') dotenv.load()
 
-const {WebClient} = require('@slack/client');
+const {
+  WebClient
+} = require('@slack/client');
 const slackWebClient = new WebClient(process.env.SLACK_BOT_OAUTH_TOKEN);
 
 const createSlackEventAdapter = require('@slack/events-api').createSlackEventAdapter;
@@ -17,33 +19,40 @@ const port = process.env.PORT || 3000;
 const msgs = require('./messages')
 
 slackEvents.on('team_join', event => {
-  let {type, user} = event;
+  let {
+    user
+  } = event;
 
   console.log(`the following user joined the team: ${JSON.stringify(user)}`);
 
   slackWebClient.chat.postEphemeral({
-    channel: '#announcements',
-    user: user.id,
-    text: msgs.WELCOME_MESSAGES.GLOBAL(user.real_name)
-  }).then((result) => {
+      channel: '#announcements',
+      user: user.id,
+      text: msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name)
+    }).then((result) => {
       console.log('Message sent: ', JSON.stringify(result));
     })
     .catch(console.error);
 });
 
 slackEvents.on('member_joined_channel', event => {
-  let {type, user, channel} = event;
+  console.log(`member ${event.user} joined ${event.channel}`);
+
+  var msg = msgs.CHANNEL_WELCOME_MESSAGES[event.channel]();
+  if (!msg) {
+    console.log(`joins to ${event.channel} don't get a message`);
+  }
 
   slackWebClient.chat.postEphemeral({
-    channel: '#announcements',
-    user: user,
-    text: msgs.WELCOME_MESSAGES.GLOBAL()
-  }).then((result) => {
+      channel: event.channel,
+      user: event.user,
+      text: msg
+    }).then((result) => {
       console.log('Message sent: ', JSON.stringify(result));
     })
     .catch(console.error);
 
-  console.log(`member ${user} joined ${channel})`);
+
 });
 
 // Handle errors (see `errorCodes` export)
