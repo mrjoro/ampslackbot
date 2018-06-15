@@ -24,7 +24,7 @@ slackEvents.on('team_join', event => {
   slackWebClient.chat.postEphemeral({
     channel: '#announcements',
     user: user.id,
-    text: msgs.GLOBAL_WELCOME_MESSAGE(user.real_name)
+    text: msgs.WELCOME_MESSAGES.GLOBAL(user.real_name)
   }).then((result) => {
       // `result` contains information about the posted message
       console.log('Message sent: ', res.ts);
@@ -38,7 +38,7 @@ slackEvents.on('member_joined_channel', event => {
   slackWebClient.chat.postEphemeral({
     channel: '#announcements',
     user: user,
-    text: msgs.GLOBAL_WELCOME_MESSAGE()
+    text: msgs.WELCOME_MESSAGES.GLOBAL()
   }).then((result) => {
       // `result` contains information about the posted message
       console.log('Message sent: ', res.ts);
