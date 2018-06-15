@@ -38,15 +38,15 @@ slackEvents.on('team_join', event => {
 slackEvents.on('member_joined_channel', event => {
   console.log(`member ${event.user} joined ${event.channel}`);
 
-  var msg = msgs.CHANNEL_WELCOME_MESSAGES[event.channel]();
-  if (!msg) {
+  var msgFunc = msgs.CHANNEL_WELCOME_MESSAGES[event.channel];
+  if (!msgFunc) {
     console.log(`joins to ${event.channel} don't get a message`);
   }
 
   slackWebClient.chat.postEphemeral({
       channel: event.channel,
       user: event.user,
-      text: msg
+      text: msgFunc()
     }).then((result) => {
       console.log('Message sent: ', JSON.stringify(result));
     })
