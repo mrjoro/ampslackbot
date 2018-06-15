@@ -1,3 +1,5 @@
+'use strict'
+
 // Use dotenv to read the local .env file during development
 // (otherwise the process.env comes from the process running
 // this, e.g. Heroku config vars)
@@ -12,29 +14,19 @@ const createSlackEventAdapter = require('@slack/events-api').createSlackEventAda
 const slackEvents = createSlackEventAdapter(process.env.SLACK_VERIFICATION_TOKEN);
 const port = process.env.PORT || 3000;
 
-slackEvents.on('reaction_added', event => {
-  let {type, user, item} = event;
-
-  console.log(`a reaction was added by ${user}: ${JSON.stringify(item)}`);
-
-  // See: https://api.slack.com/methods/chat.postMessage
-  slackWebClient.chat.postMessage({ channel: user, text: 'Nice reaction!' })
-    .then((res) => {
-      // `res` contains information about the posted message
-      console.log('Message sent: ', res.ts);
-    })
-    .catch(console.error);
-});
+const msgs = require('./messages')
 
 slackEvents.on('team_join', event => {
   let {type, user} = event;
 
   console.log(`the following user joined the team: ${JSON.stringify(user)}`);
 
-  // See: https://api.slack.com/methods/chat.postMessage
-  slackWebClient.chat.postMessage({ channel: user.id, text: 'Welcome to the AMP Slack!  Join the #using-amp channel to ask questions about using AMP.' })
-    .then((res) => {
-      // `res` contains information about the posted message
+  slackWebClient.chat.postEphemeral({
+    channel: '#announcements',
+    user: user.id,
+    text: msgs.GLOBAL_WELCOME_MESSAGE(user.real_name)
+  }).then((result) => {
+      // `result` contains information about the posted message
       console.log('Message sent: ', res.ts);
     })
     .catch(console.error);
@@ -43,13 +35,24 @@ slackEvents.on('team_join', event => {
 slackEvents.on('member_joined_channel', event => {
   let {type, user, channel} = event;
 
+  slackWebClient.chat.postEphemeral({
+    channel: '#announcements',
+    user: user,
+    text: msgs.GLOBAL_WELCOME_MESSAGE()
+  }).then((result) => {
+      // `result` contains information about the posted message
+      console.log('Message sent: ', res.ts);
+    })
+    .catch(console.error);
+
   console.log(`member ${user} joined ${channel})`);
 });
 
 // Handle errors (see `errorCodes` export)
 slackEvents.on('error', console.error);
 
-// Start a basic HTTP server
+// start a basic server to listen for events (by default this listens) for
+// events at /slack/events
 slackEvents.start(port).then(() => {
   console.log(`server listening for events on port ${port} at /slack/events`);
 });
