@@ -41,6 +41,7 @@ slackEvents.on('member_joined_channel', event => {
   var msgFunc = msgs.CHANNEL_WELCOME_MESSAGES[event.channel];
   if (!msgFunc) {
     console.log(`joins to ${event.channel} don't get a message`);
+    return;
   }
 
   slackWebClient.chat.postEphemeral({
