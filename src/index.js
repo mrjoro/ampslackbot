@@ -81,7 +81,7 @@ slackEvents.on('message', event => {
     user
   } = event;
 
-  console.log(`message event received from: ${(user)}`);
+  console.log(`message event received from: ${(user)}: ${JSON.stringify(event)}`);
   /*
   slackWebClient.chat.postMessage({
       channel: user,
