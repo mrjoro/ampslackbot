@@ -16,5 +16,7 @@ const CHANNEL_WELCOME_MESSAGES = {
 
 const JOIN_TEAM_WELCOME_MESSAGE = (name) => `*Welcome to the AMP Slack${name ? ' ' + name : ''}!* :wave:\n\nThe AMP Slack is a place for the entire AMP community to come together, including people using AMP to develop their sites and those who are contributing to the AMP open source project.\n\nTo get the most out of this community please join the channel(s) that fit your needs:\n\n• If you have *questions about using AMP* you can ask them in the <#${CHANNEL_USING_AMP}|using-amp> channel.\n\n• If you're *contributing to the AMP open source project*, join the <#${CHANNEL_CONTRIBUTING}|contributing> channel. Also stop by the <#${CHANNEL_WELCOME_CONTRIBUTORS}|welcome-contributors> channel to say hi or to ask any questions about contributing--no matter how basic they seem.\n\n• There are many other channels available; just click *Channels* in the sidebar to find the ones that interest you.\n\nJoin as many channels as you'd like, though please remember to only post a given question in one channel!`
 
+const NO_SPECIAL_COMMANDS_MESSAGE = () => `Thank you for sending me a message!  I don't understand any special commands yet, but here's the welcome message I normally send to new members of the AMP Slack:\n\n`
+
 exports.JOIN_TEAM_WELCOME_MESSAGE = JOIN_TEAM_WELCOME_MESSAGE;
 exports.CHANNEL_WELCOME_MESSAGES = CHANNEL_WELCOME_MESSAGES;

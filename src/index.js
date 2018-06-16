@@ -51,9 +51,27 @@ slackEvents.on('member_joined_channel', event => {
       console.log('Message sent: ', JSON.stringify(result));
     })
     .catch(console.error);
-
-
 });
+
+/**
+ * Someone mentioned this bot in a message.  We don't currently understand any
+ * special commands, so we just respond with the welcome message.
+ */
+slackEvents.on('app_mention', event => {
+  let {
+    user
+  } = event;
+
+  console.log(`the following user sent a message to this bot: ${(user)}`);
+  slackWebClient.chat.postMessage({
+      channel: user,
+      text: msgs.NO_SPECIAL_COMMANDS_MESSAGE() + msgs.JOIN_TEAM_WELCOME_MESSAGE()
+    }).then((result) => {
+      console.log('Message sent: ', JSON.stringify(result));
+    })
+    .catch(console.error);
+});
+
 
 // Handle errors (see `errorCodes` export)
 slackEvents.on('error', console.error);
