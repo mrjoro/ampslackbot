@@ -53,6 +53,8 @@ slackEvents.on('member_joined_channel', event => {
     .catch(console.error);
 });
 
+// TODO(jrozier): it doesn't look like Slack sends these messages even if
+//     I subscribe to them; figure out why...
 /**
  * Someone mentioned this bot in a message.  We don't currently understand any
  * special commands, so we just respond with the welcome message.
@@ -62,7 +64,7 @@ slackEvents.on('app_mention', event => {
     user
   } = event;
 
-  console.log(`the following user sent a message to this bot: ${(user)}`);
+  console.log(`the following user sent a message to this bot: ${user}`);
   slackWebClient.chat.postMessage({
       channel: user,
       text: msgs.NO_SPECIAL_COMMANDS_MESSAGE() + msgs.JOIN_TEAM_WELCOME_MESSAGE()
@@ -70,27 +72,6 @@ slackEvents.on('app_mention', event => {
       console.log('Message sent: ', JSON.stringify(result));
     })
     .catch(console.error);
-});
-
-/**
- * Someone mentioned this bot in a message.  We don't currently understand any
- * special commands, so we just respond with the welcome message.
- */
-slackEvents.on('message', event => {
-  let {
-    user
-  } = event;
-
-  console.log(`message event received from: ${(user)}: ${JSON.stringify(event)}`);
-  /*
-  slackWebClient.chat.postMessage({
-      channel: user,
-      text: msgs.NO_SPECIAL_COMMANDS_MESSAGE() + msgs.JOIN_TEAM_WELCOME_MESSAGE()
-    }).then((result) => {
-      console.log('Message sent: ', JSON.stringify(result));
-    })
-    .catch(console.error);
-  */
 });
 
 
