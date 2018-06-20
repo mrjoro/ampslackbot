@@ -61,3 +61,4 @@ typings/
 .next
 
 app.yaml
+package-lock.json
