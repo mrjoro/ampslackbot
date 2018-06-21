@@ -38,7 +38,7 @@ const JOIN_TEAM_WELCOME_MESSAGE = (name) => `*Welcome to the AMP Slack${name ? '
 const NO_SPECIAL_COMMANDS_MESSAGE = () => `Thank you for sending me a message!  I don't understand any special commands yet, but here's the welcome message I normally send to new members of the AMP Slack:\n\n`
 
 exports.getMessage = function(teamId, channelId) {
-  var teamChannels = SLACK_TEAM_CHANNELS(teamId);
+  var teamChannels = SLACK_TEAM_CHANNELS[teamId];
   if (!teamChannels) {
     return undefined;
   }
