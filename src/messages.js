@@ -40,10 +40,11 @@ const NO_SPECIAL_COMMANDS_MESSAGE = () => `Thank you for sending me a message!  
 exports.getMessage = function(teamId, channelId) {
   var teamChannels = SLACK_TEAM_CHANNELS[teamId];
   if (!teamChannels) {
+    log.console(`No messages found for team ${teamId}`);
     return undefined;
   }
 
-  msgFunc = CHANNEL_WELCOME_MESSAGES[teamChannels[channelId]];
+  var msgFunc = CHANNEL_WELCOME_MESSAGES[teamChannels[channelId]];
   return msgFunc ? msgFunc() : undefined;
 };
 
