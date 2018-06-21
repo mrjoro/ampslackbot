@@ -23,11 +23,11 @@ slackEvents.on('team_join', event => {
     user
   } = event;
 
-  console.log(`the following user joined the team: ${JSON.stringify(user)}`);
-  console.log(`will send message ${msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name)}`)
+  console.log(`the following user joined the team: ${user.id}`);
   slackWebClient.chat.postMessage({
       channel: user.id,
-      text: msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name)
+      text: msgs.JOIN_TEAM_WELCOME_MESSAGE(user.real_name),
+      link_names: true
     }).then((result) => {
       console.log('Message sent: ', JSON.stringify(result));
     })
@@ -37,16 +37,17 @@ slackEvents.on('team_join', event => {
 slackEvents.on('member_joined_channel', event => {
   console.log(`member ${event.user} joined ${event.channel}`);
 
-  var msgFunc = msgs.CHANNEL_WELCOME_MESSAGES[event.channel];
-  if (!msgFunc) {
-    console.log(`joins to ${event.channel} don't get a message`);
+  var msg = msgs.getMessage(event.team, event.channel);
+  if (!msg) {
+    console.log(`joins to ${event.channel} in team ${event.team} don't get a message`);
     return;
   }
 
   slackWebClient.chat.postEphemeral({
       channel: event.channel,
       user: event.user,
-      text: msgFunc()
+      text: msg,
+      link_names: true
     }).then((result) => {
       console.log('Message sent: ', JSON.stringify(result));
     })
